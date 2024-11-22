@@ -7,7 +7,7 @@
     "start": "next start",
     "lint": "next lint",
     "prisma": "dotenv -e .env.local prisma",
-    "clean": "rm -rf node_modules pnpm-lock.yaml .next && pnpm up --latest"
+    "clean": "rm -rf node_modules pnpm-lock.yaml .next && pnpm up --latest && prisma generate"
   },
   "dependencies": {
     "@auth/prisma-adapter": "^2.7.4",

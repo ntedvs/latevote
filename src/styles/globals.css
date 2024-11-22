@@ -8,14 +8,22 @@
   }
 
   h1 {
-    @apply text-5xl font-bold;
+    @apply mb-4 text-5xl font-bold;
   }
+}
 
-  input {
+@layer components {
+  .input {
     @apply border-primary rounded border-2 bg-background p-2;
   }
 
-  button {
+  .button {
     @apply bg-primary rounded p-2 text-background;
+  }
+}
+
+@layer utilities {
+  .gradient {
+    @apply from-primary to-secondary inline-block bg-gradient-to-r bg-clip-text text-transparent;
   }
 }

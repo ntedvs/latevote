@@ -8,6 +8,7 @@ declare module "next-auth" {
     user: {
       id: string
       email: string
+      admin: boolean
     }
   }
 }
@@ -20,5 +21,5 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       from: "auth@latevote.com",
     }),
   ],
-  pages: { signIn: "/signin" },
+  pages: { signIn: "/signin", verifyRequest: "/verify" },
 })

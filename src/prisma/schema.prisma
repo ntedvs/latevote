@@ -24,10 +24,12 @@ model Question {
 }
 
 model User {
-  id       String    @id @default(cuid())
-  email    String    @unique
-  // emailVerified DateTime
-  sessions Session[]
+  id            String    @id @default(cuid())
+  email         String    @unique
+  emailVerified DateTime
+  sessions      Session[]
+
+  admin Boolean @default(false)
 
   school   School @relation(fields: [schoolId], references: [id])
   schoolId Int
@@ -37,7 +39,8 @@ model Session {
   sessionToken String   @unique
   userId       String
   expires      DateTime
-  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model VerificationToken {

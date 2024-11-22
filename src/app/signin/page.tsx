@@ -10,9 +10,12 @@ export default function SignIn() {
           "use server"
           await signIn("nodemailer", fd)
         }}
+        className="flex flex-col"
       >
+        <p>Email</p>
         <input name="email" className="input" />
-        <button>Sign In</button>
+
+        <button className="button">Sign In</button>
       </form>
     </>
   )
