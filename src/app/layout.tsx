@@ -1,7 +1,6 @@
-import { auth, signIn } from "@/lib/auth"
-import "@/styles/globals.css"
+import { auth, signIn, signOut } from "@/lib/auth"
+import "@/styles/base.css"
 import { Metadata } from "next"
-import { signOut } from "next-auth/react"
 import Link from "next/link"
 import { ReactNode } from "react"
 
@@ -16,15 +15,18 @@ export default async function Layout({ children }: { children: ReactNode }) {
     <html lang="en">
       <body>
         <nav className="flex p-4">
-          <Link href="/" className="gradient text-3xl font-semibold">
+          <Link
+            href="/"
+            className="font-semibold text-2xl bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary"
+          >
             Latevote
           </Link>
 
-          <div className="ml-auto flex items-center gap-2">
+          <div className="ml-auto flex gap-2">
             {!session && (
               <Link
                 href="/register"
-                className="button bg-secondary rounded-full px-3 py-2"
+                className="button bg-secondary px-3 py-2 rounded-full"
               >
                 Register
               </Link>
@@ -36,14 +38,13 @@ export default async function Layout({ children }: { children: ReactNode }) {
                 session ? await signOut() : await signIn()
               }}
             >
-              <button className="button rounded-full px-3 py-2">
+              <button className="button px-3 py-2 rounded-full">
                 Sign {session ? "Out" : "In"}
               </button>
             </form>
           </div>
         </nav>
-
-        <main className="mx-auto w-4/5 sm:w-3/5">{children}</main>
+        <main className="w-4/5 sm:w-3/5 mx-auto">{children}</main>
       </body>
     </html>
   )

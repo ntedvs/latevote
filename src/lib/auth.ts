@@ -6,9 +6,8 @@ import Nodemailer from "next-auth/providers/nodemailer"
 declare module "next-auth" {
   interface Session {
     user: {
-      id: string
-      email: string
       admin: boolean
+      groupId: number
     }
   }
 }
@@ -21,5 +20,13 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       from: "auth@latevote.com",
     }),
   ],
-  pages: { signIn: "/signin", verifyRequest: "/verify" },
+  callbacks: {
+    async signIn({ user: { email } }) {
+      const user = await prisma.user.findUnique({
+        where: { email: email! },
+      })
+
+      return !!user
+    },
+  },
 })

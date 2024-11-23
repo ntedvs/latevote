@@ -6,7 +6,10 @@ export default function Pending() {
   const status = useFormStatus()
 
   return (
-    <button disabled={status.pending} className="button">
+    <button
+      disabled={status.pending}
+      className="button disabled:cursor-not-allowed disabled:bg-opacity-80"
+    >
       Submit
     </button>
   )

@@ -1,27 +1,22 @@
 import { auth } from "@/lib/auth"
+import Admin from "./Admin"
+import Standard from "./Standard"
 
 export default async function Home() {
   const session = await auth()
 
   return (
     <>
-      <h1>Home</h1>
-
       {session ? (
-        <>
-          {session.user.admin ? (
-            <>
-              <p>ADMIN</p>
-            </>
-          ) : (
-            <>
-              <p>NOT ADMINIG</p>
-            </>
-          )}
-        </>
+        session.user.admin ? (
+          <Admin groupId={session.user.groupId} />
+        ) : (
+          <Standard />
+        )
       ) : (
         <>
-          <p>Blah LBah new user</p>
+          <h1>Latevote</h1>
+          <p>Superlatives the easy way.</p>
         </>
       )}
     </>
