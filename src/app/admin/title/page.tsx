@@ -3,8 +3,8 @@ import { prisma } from "@/lib/prisma"
 import protect from "@/utils/protect"
 import { redirect } from "next/navigation"
 
-export default async function NewTitle() {
-  const session = await protect(true)
+export default async function Title() {
+  const { groupId } = await protect(true)
 
   return (
     <>
@@ -19,9 +19,7 @@ export default async function NewTitle() {
             size: string
           }
 
-          await prisma.title.create({
-            data: { body, size: +size, groupId: session.user.groupId },
-          })
+          await prisma.title.create({ data: { body, size: +size, groupId } })
 
           redirect("/")
         }}

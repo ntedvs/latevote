@@ -1,7 +1,10 @@
 import { prisma } from "@/lib/prisma"
+import protect from "@/utils/protect"
 import Link from "next/link"
 
-export default async function Admin({ groupId }: { groupId: number }) {
+export default async function Admin() {
+  const { groupId } = await protect(true)
+
   const titles = await prisma.title.findMany({ where: { groupId } })
   const users = await prisma.user.findMany({ where: { groupId } })
 
@@ -10,7 +13,7 @@ export default async function Admin({ groupId }: { groupId: number }) {
       <div className="mb-2 flex items-center justify-between">
         <h2>Titles</h2>
 
-        <Link href="/new/title" className="button">
+        <Link href="/admin/title" className="button">
           New
         </Link>
       </div>
@@ -30,8 +33,8 @@ export default async function Admin({ groupId }: { groupId: number }) {
       <div className="mb-2 mt-4 flex items-center justify-between">
         <h2>Users</h2>
 
-        <Link href="/new/user" className="button">
-          New
+        <Link href="/admin/user" className="button">
+          Add
         </Link>
       </div>
 

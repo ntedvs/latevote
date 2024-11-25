@@ -11,33 +11,16 @@ export default function Register() {
         action={async (fd) => {
           "use server"
 
-          const { groupName, adminEmail, adminName } = Object.fromEntries(
-            fd,
-          ) as { [k: string]: string }
+          const { gn, ae, an } = Object.fromEntries(fd) as {
+            [k: string]: string
+          }
 
           const group = await prisma.group.create({
-            data: { name: groupName },
-          })
-
-          await prisma.title.createMany({
-            data: [
-              { body: "Most Likely to Succeed", size: 1 },
-              { body: "Most Likely to Become Famous", size: 1 },
-              { body: "Best Dressed", size: 1 },
-              { body: "Best Duo", size: 2 },
-              { body: "Best Hair", size: 2 },
-              { body: "Most Athletic", size: 1 },
-              { body: "Cutest Couple", size: 2 },
-            ].map((title) => ({ ...title, groupId: group.id })),
+            data: { name: gn },
           })
 
           await prisma.user.create({
-            data: {
-              email: adminEmail,
-              name: adminName,
-              admin: true,
-              groupId: group.id,
-            },
+            data: { email: ae, name: an, admin: true, groupId: group.id },
           })
 
           redirect("/api/auth/signin")
@@ -45,13 +28,13 @@ export default function Register() {
         className="flex flex-col"
       >
         <p>Group Name</p>
-        <input name="groupName" className="input" />
+        <input name="gn" className="input" />
 
         <p>Administrator Email</p>
-        <input name="adminEmail" className="input" />
+        <input name="ae" className="input" />
 
         <p>Administrator Name</p>
-        <input name="adminName" className="input" />
+        <input name="an" className="input" />
 
         <Pending />
       </form>

@@ -8,5 +8,5 @@ export default async (admin: boolean) => {
     redirect("/")
   }
 
-  return session
+  return session.user
 }

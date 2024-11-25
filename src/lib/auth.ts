@@ -6,6 +6,7 @@ import Nodemailer from "next-auth/providers/nodemailer"
 declare module "next-auth" {
   interface Session {
     user: {
+      id: string
       admin: boolean
       groupId: number
     }
@@ -29,4 +30,5 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       return !!user
     },
   },
+  // pages: { signIn: "/signin", verifyRequest: "/verify" },
 })

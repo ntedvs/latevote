@@ -1,24 +1,20 @@
 import { auth } from "@/lib/auth"
-import Admin from "./Admin"
-import Standard from "./Standard"
+import { redirect } from "next/navigation"
 
 export default async function Home() {
   const session = await auth()
 
+  if (session) {
+    if (session.user.admin) {
+      redirect("/admin")
+    } else {
+      redirect("/vote")
+    }
+  }
+
   return (
     <>
-      {session ? (
-        session.user.admin ? (
-          <Admin groupId={session.user.groupId} />
-        ) : (
-          <Standard />
-        )
-      ) : (
-        <>
-          <h1>Latevote</h1>
-          <p>Superlatives the easy way.</p>
-        </>
-      )}
+      <h1>Latevote</h1>
     </>
   )
 }
