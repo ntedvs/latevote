@@ -27,6 +27,8 @@ model Title {
 }
 
 model Response {
+  names String[]
+
   title   Title @relation(fields: [titleId], references: [id])
   titleId Int
 

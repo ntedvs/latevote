@@ -10,23 +10,30 @@ export const metadata: Metadata = {
 
 export default async function Layout({ children }: { children: ReactNode }) {
   const session = await auth()
+  const path = session?.user.admin ? "Admin" : "Vote"
 
   return (
     <html lang="en">
       <body>
-        <nav className="flex p-4">
+        <nav className="flex gap-4 p-4">
           <Link
             href="/"
-            className="font-semibold text-2xl bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary"
+            className="bg-gradient-to-r from-primary to-secondary bg-clip-text text-2xl font-semibold text-transparent"
           >
             Latevote
           </Link>
+
+          {session && (
+            <Link href={"/" + path.toLowerCase()} className="text-2xl">
+              {path}
+            </Link>
+          )}
 
           <div className="ml-auto flex gap-2">
             {!session && (
               <Link
                 href="/register"
-                className="button bg-secondary px-3 py-2 rounded-full"
+                className="button rounded-full bg-secondary px-3 py-2"
               >
                 Register
               </Link>
@@ -38,13 +45,13 @@ export default async function Layout({ children }: { children: ReactNode }) {
                 session ? await signOut() : await signIn()
               }}
             >
-              <button className="button px-3 py-2 rounded-full">
+              <button className="button rounded-full px-3 py-2">
                 Sign {session ? "Out" : "In"}
               </button>
             </form>
           </div>
         </nav>
-        <main className="w-4/5 sm:w-3/5 mx-auto">{children}</main>
+        <main className="mx-auto w-4/5 sm:w-3/5">{children}</main>
       </body>
     </html>
   )
