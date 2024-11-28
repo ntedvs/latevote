@@ -10,24 +10,17 @@ export const metadata: Metadata = {
 
 export default async function Layout({ children }: { children: ReactNode }) {
   const session = await auth()
-  const path = session?.user.admin ? "Admin" : "Vote"
 
   return (
     <html lang="en">
       <body>
         <nav className="flex gap-4 p-4">
           <Link
-            href="/"
+            href={"/" + session ? "admin" : "vote"}
             className="bg-gradient-to-r from-primary to-secondary bg-clip-text text-2xl font-semibold text-transparent"
           >
             Latevote
           </Link>
-
-          {session && (
-            <Link href={"/" + path.toLowerCase()} className="text-2xl">
-              {path}
-            </Link>
-          )}
 
           <div className="ml-auto flex gap-2">
             {!session && (

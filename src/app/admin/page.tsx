@@ -1,6 +1,7 @@
 import { prisma } from "@/lib/prisma"
 import protect from "@/utils/protect"
 import Link from "next/link"
+import Title from "./Title"
 
 export default async function Admin() {
   const { groupId } = await protect(true)
@@ -21,13 +22,9 @@ export default async function Admin() {
       <div className="space-y-2 rounded border p-4">
         {titles
           .sort((a, b) => a.body.localeCompare(b.body))
-          .map((title) => {
-            return (
-              <div key={title.id}>
-                <p className="text-lg">{title.body}</p>
-              </div>
-            )
-          })}
+          .map((title) => (
+            <Title key={title.id} id={title.id} body={title.body} />
+          ))}
       </div>
 
       <div className="mb-2 mt-4 flex items-center justify-between">
@@ -41,8 +38,8 @@ export default async function Admin() {
       <div className="space-y-2 rounded border p-4">
         {users.map((user) => {
           return (
-            <div key={user.id}>
-              <p className="text-lg">{user.name}</p>
+            <div key={user.id} className="flex justify-between">
+              <p className={`${user.admin && "font-semibold"}`}>{user.name}</p>
             </div>
           )
         })}

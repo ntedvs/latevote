@@ -8,7 +8,7 @@ export default async function Home() {
     if (session.user.admin) {
       redirect("/admin")
     } else {
-      redirect("/vote")
+      redirect("/titles")
     }
   }
 

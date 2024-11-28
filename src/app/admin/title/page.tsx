@@ -21,7 +21,7 @@ export default async function Title() {
 
           await prisma.title.create({ data: { body, size: +size, groupId } })
 
-          redirect("/")
+          redirect("/admin")
         }}
         className="flex flex-col"
       >
