@@ -24,6 +24,7 @@ export default async function Layout({ children }: { children: ReactNode }) {
                   "use server"
                   await signOut()
                 }}
+                className="button rounded-full px-3"
               >
                 Sign Out
               </button>
