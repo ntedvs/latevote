@@ -3,17 +3,7 @@ import { PrismaAdapter } from "@auth/prisma-adapter"
 import NextAuth from "next-auth"
 import Nodemailer from "next-auth/providers/nodemailer"
 
-declare module "next-auth" {
-  interface Session {
-    user: {
-      id: string
-      admin: boolean
-      groupId: number
-    }
-  }
-}
-
-export const { handlers, signIn, signOut, auth } = NextAuth({
+export const { handlers, auth, signIn, signOut } = NextAuth({
   adapter: PrismaAdapter(prisma),
   providers: [
     Nodemailer({
@@ -22,13 +12,12 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     }),
   ],
   callbacks: {
-    async signIn({ user: { email } }) {
+    signIn: async (params) => {
       const user = await prisma.user.findUnique({
-        where: { email: email! },
+        where: { email: params.user.email! },
       })
 
       return !!user
     },
   },
-  // pages: { signIn: "/signin", verifyRequest: "/verify" },
 })

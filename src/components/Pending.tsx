@@ -3,12 +3,12 @@
 import { useFormStatus } from "react-dom"
 
 export default function Pending() {
-  const status = useFormStatus()
+  const { pending } = useFormStatus()
 
   return (
     <button
-      disabled={status.pending}
-      className="button disabled:cursor-not-allowed disabled:bg-opacity-80"
+      disabled={pending}
+      className="button disabled:bg-primary/80 disabled:cursor-not-allowed"
     >
       Submit
     </button>

@@ -9,17 +9,19 @@ CREATE TABLE "Group" (
 -- CreateTable
 CREATE TABLE "Title" (
     "id" SERIAL NOT NULL,
-    "body" TEXT NOT NULL,
-    "size" INTEGER NOT NULL,
+    "text" TEXT NOT NULL,
     "groupId" INTEGER NOT NULL,
 
     CONSTRAINT "Title_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
-CREATE TABLE "Response" (
+CREATE TABLE "Reponse" (
+    "text" TEXT NOT NULL,
+    "userId" TEXT NOT NULL,
     "titleId" INTEGER NOT NULL,
-    "userId" TEXT NOT NULL
+
+    CONSTRAINT "Reponse_pkey" PRIMARY KEY ("userId","titleId")
 );
 
 -- CreateTable
@@ -27,8 +29,6 @@ CREATE TABLE "User" (
     "id" TEXT NOT NULL,
     "email" TEXT NOT NULL,
     "emailVerified" TIMESTAMP(3),
-    "name" TEXT NOT NULL,
-    "admin" BOOLEAN NOT NULL DEFAULT false,
     "groupId" INTEGER NOT NULL,
 
     CONSTRAINT "User_pkey" PRIMARY KEY ("id")
@@ -51,9 +51,6 @@ CREATE TABLE "VerificationToken" (
 );
 
 -- CreateIndex
-CREATE UNIQUE INDEX "Response_titleId_userId_key" ON "Response"("titleId", "userId");
-
--- CreateIndex
 CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
 
 -- CreateIndex
@@ -63,10 +60,10 @@ CREATE UNIQUE INDEX "Session_sessionToken_key" ON "Session"("sessionToken");
 ALTER TABLE "Title" ADD CONSTRAINT "Title_groupId_fkey" FOREIGN KEY ("groupId") REFERENCES "Group"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Response" ADD CONSTRAINT "Response_titleId_fkey" FOREIGN KEY ("titleId") REFERENCES "Title"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Reponse" ADD CONSTRAINT "Reponse_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Response" ADD CONSTRAINT "Response_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Reponse" ADD CONSTRAINT "Reponse_titleId_fkey" FOREIGN KEY ("titleId") REFERENCES "Title"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "User" ADD CONSTRAINT "User_groupId_fkey" FOREIGN KEY ("groupId") REFERENCES "Group"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

@@ -1,4 +1,4 @@
-import { auth, signIn, signOut } from "@/lib/auth"
+import { auth, signOut } from "@/lib/auth"
 import "@/styles/base.css"
 import { Metadata } from "next"
 import Link from "next/link"
@@ -14,37 +14,37 @@ export default async function Layout({ children }: { children: ReactNode }) {
   return (
     <html lang="en">
       <body>
-        <nav className="flex gap-4 p-4">
-          <Link
-            href={"/" + session ? "admin" : "vote"}
-            className="bg-gradient-to-r from-primary to-secondary bg-clip-text text-2xl font-semibold text-transparent"
-          >
-            Latevote
-          </Link>
+        <nav className="flex p-4 text-2xl">
+          <Link href="/">Latevote</Link>
 
-          <div className="ml-auto flex gap-2">
-            {!session && (
-              <Link
-                href="/register"
-                className="button rounded-full bg-secondary px-3 py-2"
+          <div className="ml-auto text-lg">
+            {session ? (
+              <button
+                onClick={async () => {
+                  "use server"
+                  await signOut()
+                }}
               >
-                Register
-              </Link>
-            )}
-
-            <form
-              action={async () => {
-                "use server"
-                session ? await signOut() : await signIn()
-              }}
-            >
-              <button className="button rounded-full px-3 py-2">
-                Sign {session ? "Out" : "In"}
+                Sign Out
               </button>
-            </form>
+            ) : (
+              <div className="space-x-2">
+                <Link
+                  href="/register"
+                  className="button bg-secondary rounded-full px-3"
+                >
+                  Register
+                </Link>
+
+                <Link href="/signin" className="button rounded-full px-3">
+                  Sign In
+                </Link>
+              </div>
+            )}
           </div>
         </nav>
-        <main className="mx-auto w-4/5 sm:w-3/5">{children}</main>
+
+        <main className="mx-auto mb-8 w-4/5 lg:mt-8 lg:w-3/5">{children}</main>
       </body>
     </html>
   )
