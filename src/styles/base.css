@@ -1,23 +1,17 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
 
 @layer base {
-  body {
-    @apply bg-background text-foreground;
-  }
-
-  h1 {
-    @apply mb-4 text-5xl font-bold;
+  button {
+    @apply cursor-pointer;
   }
 }
 
 @layer components {
   .input {
-    @apply border-primary rounded border bg-background p-2;
+    @apply rounded border-2 border-blue-500 p-2;
   }
 
   .button {
-    @apply bg-primary rounded p-2 text-background;
+    @apply rounded bg-blue-500 p-2 text-white;
   }
 }
