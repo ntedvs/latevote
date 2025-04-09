@@ -1,5 +1,12 @@
 @import "tailwindcss";
 
+@theme {
+  --color-background: oklch(0.99 0.0132 102.01);
+  --color-foreground: oklch(0.15 0.0235 104.78);
+  --color-primary: oklch(0.84 0.1692 102.32);
+  --color-secondary: oklch(0.83 0.2153 143.11);
+}
+
 @layer base {
   button {
     @apply cursor-pointer;
@@ -8,10 +15,10 @@
 
 @layer components {
   .input {
-    @apply rounded border-2 border-blue-500 p-2;
+    @apply rounded-md border border-primary p-2;
   }
 
   .button {
-    @apply rounded bg-blue-500 p-2 text-white;
+    @apply rounded-md bg-primary p-2 text-background;
   }
 }

@@ -1,37 +1,64 @@
-import { groupsTable, usersTable } from "@/drizzle/schema"
+import Pending from "@/components/Pending"
+import { organizationsTable, usersTable } from "@/drizzle/schema"
+import { signIn } from "@/lib/auth"
 import { db } from "@/lib/drizzle"
-import { redirect } from "next/navigation"
+import { shape } from "@/utils/client"
 
 export default function Register() {
   return (
-    <form
-      action={async (fd) => {
-        "use server"
+    <>
+      <h1>Register</h1>
 
-        const { name, email, admin } = Object.fromEntries(fd) as {
-          [k: string]: string
-        }
+      <form
+        action={async (fd) => {
+          "use server"
 
-        const [group] = await db
-          .insert(groupsTable)
-          .values({ name })
-          .returning()
+          const { org, name, email } = shape(fd)
 
-        await db.insert(usersTable).values({
-          email,
-          name: admin,
-          admin: true,
-          groupId: group.id,
-        })
+          const [{ id }] = await db
+            .insert(organizationsTable)
+            .values({ name: org })
+            .returning()
 
-        redirect("/signin")
-      }}
-    >
-      <input name="name" className="input" />
-      <input name="email" className="input" />
-      <input name="admin" className="input" />
+          await db
+            .insert(usersTable)
+            .values({ email, name, type: "manager", organizationId: id })
 
-      <button className="button">Submit</button>
-    </form>
+          fd.append("redirectTo", "/organization/" + id)
+          await signIn("resend", fd)
+        }}
+        className="flex flex-col"
+      >
+        <label htmlFor="org">Organization Name</label>
+        <input
+          id="org"
+          name="org"
+          required
+          placeholder="Organization Name"
+          className="input"
+        />
+
+        <label htmlFor="name">Your Name</label>
+        <input
+          id="name"
+          name="name"
+          required
+          placeholder="Your Name"
+          className="input"
+        />
+
+        <label htmlFor="email">Your Email</label>
+        <input
+          type="email"
+          id="email"
+          name="email"
+          required
+          placeholder="Your Email"
+          className="input"
+        />
+
+        <Pending />
+      </form>
+    </>
   )
 }

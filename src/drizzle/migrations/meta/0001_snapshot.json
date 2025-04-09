@@ -1,6 +1,6 @@
 {
-  "id": "eb2260a1-23da-4033-a135-6d7a1836a0c9",
-  "prevId": "00000000-0000-0000-0000-000000000000",
+  "id": "fe45ba52-e46a-426a-959e-9b63ec47b70b",
+  "prevId": "eb2260a1-23da-4033-a135-6d7a1836a0c9",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
@@ -41,8 +41,8 @@
           "notNull": true,
           "default": "gen_random_uuid()"
         },
-        "recipientIds": {
-          "name": "recipientIds",
+        "votes": {
+          "name": "votes",
           "type": "text[]",
           "primaryKey": false,
           "notNull": true
@@ -121,12 +121,11 @@
           "primaryKey": false,
           "notNull": true
         },
-        "revealed": {
-          "name": "revealed",
+        "released": {
+          "name": "released",
           "type": "boolean",
           "primaryKey": false,
-          "notNull": true,
-          "default": false
+          "notNull": true
         },
         "organizationId": {
           "name": "organizationId",
@@ -213,8 +212,8 @@
           "notNull": true,
           "default": "gen_random_uuid()"
         },
-        "name": {
-          "name": "name",
+        "title": {
+          "name": "title",
           "type": "text",
           "primaryKey": false,
           "notNull": true
