@@ -1,9 +1,7 @@
-import { NextConfig } from "next"
+import type { NextConfig } from "next";
 
-const config: NextConfig = {
-  experimental: {
-    ppr: true,
-  },
-}
+const nextConfig: NextConfig = {
+  /* config options here */
+};
 
-export default config
+export default nextConfig;
