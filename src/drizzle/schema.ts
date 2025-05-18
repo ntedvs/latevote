@@ -5,10 +5,19 @@ const uuid = text()
   .primaryKey()
   .default(sql`gen_random_uuid()`)
 
+export const organizationsTable = pgTable("organizations", {
+  id: uuid,
+  name: text().notNull(),
+})
+
 export const usersTable = pgTable("users", {
   id: uuid,
   email: text().notNull().unique(),
   name: text().notNull(),
+
+  organizationId: text().references(() => organizationsTable.id, {
+    onDelete: "cascade",
+  }),
 })
 
 export const sessionsTable = pgTable("sessions", {
