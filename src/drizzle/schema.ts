@@ -1,5 +1,13 @@
 import { sql } from "drizzle-orm"
-import { pgTable, primaryKey, text, timestamp } from "drizzle-orm/pg-core"
+import {
+  boolean,
+  integer,
+  pgTable,
+  primaryKey,
+  text,
+  timestamp,
+  unique,
+} from "drizzle-orm/pg-core"
 
 const uuid = text()
   .primaryKey()
@@ -10,10 +18,49 @@ export const organizationsTable = pgTable("organizations", {
   name: text().notNull(),
 })
 
+export const roundsTable = pgTable("rounds", {
+  id: uuid,
+  name: text().notNull(),
+  released: boolean().notNull(),
+
+  organizationId: text()
+    .notNull()
+    .references(() => organizationsTable.id, { onDelete: "cascade" }),
+})
+
+export const superlativesTable = pgTable("superlatives", {
+  id: uuid,
+  title: text().notNull(),
+  slots: integer().notNull(),
+
+  roundId: text()
+    .notNull()
+    .references(() => roundsTable.id, { onDelete: "cascade" }),
+})
+
+export const responsesTable = pgTable(
+  "responses",
+  {
+    id: uuid,
+    votes: text().array().notNull(),
+
+    userId: text()
+      .notNull()
+      .references(() => usersTable.id, { onDelete: "cascade" }),
+    superlativeId: text()
+      .notNull()
+      .references(() => superlativesTable.id, { onDelete: "cascade" }),
+  },
+  (table) => [unique().on(table.userId, table.superlativeId)],
+)
+
 export const usersTable = pgTable("users", {
   id: uuid,
   email: text().notNull().unique(),
   name: text().notNull(),
+  type: text({ enum: ["member", "manager", "admin"] })
+    .notNull()
+    .default("member"),
 
   organizationId: text().references(() => organizationsTable.id, {
     onDelete: "cascade",
