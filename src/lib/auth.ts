@@ -17,7 +17,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
   providers: [
     Nodemailer({
       server: process.env.EMAIL_SERVER,
-      from: "auth@latevote.com",
+      from: "LateVote <auth@latevote.com>",
     }),
   ],
 })

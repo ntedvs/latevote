@@ -6,14 +6,13 @@ import {
   primaryKey,
   text,
   timestamp,
-  unique,
 } from "drizzle-orm/pg-core"
 
 const uuid = text()
   .primaryKey()
   .default(sql`gen_random_uuid()`)
 
-export const organizationsTable = pgTable("organizations", {
+export const groupsTable = pgTable("groups", {
   id: uuid,
   name: text().notNull(),
 })
@@ -21,11 +20,11 @@ export const organizationsTable = pgTable("organizations", {
 export const roundsTable = pgTable("rounds", {
   id: uuid,
   name: text().notNull(),
-  released: boolean().notNull(),
+  released: boolean().notNull().default(false),
 
-  organizationId: text()
+  groupId: text()
     .notNull()
-    .references(() => organizationsTable.id, { onDelete: "cascade" }),
+    .references(() => groupsTable.id, { onDelete: "cascade" }),
 })
 
 export const superlativesTable = pgTable("superlatives", {
@@ -38,33 +37,27 @@ export const superlativesTable = pgTable("superlatives", {
     .references(() => roundsTable.id, { onDelete: "cascade" }),
 })
 
-export const responsesTable = pgTable(
-  "responses",
-  {
-    id: uuid,
-    votes: text().array().notNull(),
+export const responsesTable = pgTable("responses", {
+  id: uuid,
+  votes: text().array().notNull(),
 
-    userId: text()
-      .notNull()
-      .references(() => usersTable.id, { onDelete: "cascade" }),
-    superlativeId: text()
-      .notNull()
-      .references(() => superlativesTable.id, { onDelete: "cascade" }),
-  },
-  (table) => [unique().on(table.userId, table.superlativeId)],
-)
+  userId: text()
+    .notNull()
+    .references(() => usersTable.id, { onDelete: "cascade" }),
+  superlativeId: text()
+    .notNull()
+    .references(() => superlativesTable.id, { onDelete: "cascade" }),
+})
 
 export const usersTable = pgTable("users", {
   id: uuid,
   email: text().notNull().unique(),
   name: text().notNull(),
-  type: text({ enum: ["member", "manager", "admin"] })
+  type: text({ enum: ["member", "leader", "admin"] })
     .notNull()
     .default("member"),
 
-  organizationId: text().references(() => organizationsTable.id, {
-    onDelete: "cascade",
-  }),
+  groupId: text().references(() => groupsTable.id, { onDelete: "cascade" }),
 })
 
 export const sessionsTable = pgTable("sessions", {
