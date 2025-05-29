@@ -1,1 +1,28 @@
 @import "tailwindcss";
+
+@theme {
+  --color-background: #fafbf8;
+  --color-foreground: #070805;
+  --color-primary: #93a76f;
+  --color-secondary: #8bb894;
+}
+
+@layer base {
+  h1 {
+    @apply mb-4 text-4xl font-bold;
+  }
+
+  button {
+    @apply cursor-pointer;
+  }
+}
+
+@layer components {
+  .input {
+    @apply rounded-md border-2 border-primary p-2;
+  }
+
+  .button {
+    @apply rounded-md bg-primary p-2 text-background;
+  }
+}

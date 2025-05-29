@@ -13,7 +13,7 @@ export default function Layout({ children }: { children: ReactNode }) {
   return (
     <html lang="en">
       <body className={`bg-background text-foreground ${inter.className}`}>
-        <main>{children}</main>
+        <main className="mx-auto my-8 max-w-4xl">{children}</main>
       </body>
     </html>
   )
